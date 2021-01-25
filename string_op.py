@@ -19,5 +19,5 @@ re.findall(pattern4,mystring)
 pattern5 = re.compile(r'[^a-z0-9]') #not a to z OR 0-9
 re.findall(pattern5,mystring)
 
-pattern6 = re.compile(r'[a-zA-Z][0-9]') #not a to z OR 0-9
-re.findall(pattern6,mystring)
+pattern6 = re.compile(r'[a-z][0-9]') #a to z AND 0-9
+re.findall(pattern6,mystring) #nothing found
