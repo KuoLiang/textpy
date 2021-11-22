@@ -6,8 +6,7 @@ Created on Mon Nov 22 16:46:04 2021
 """
 import json
 from pprint import pprint
-
-with open('data/ibike.json') as file:
+with open('data/ibike2.json') as file:
     data = file.read()
 
 jdata = json.loads(data)
