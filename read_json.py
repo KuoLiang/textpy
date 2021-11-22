@@ -6,7 +6,7 @@ Created on Mon Nov 22 16:46:04 2021
 """
 import json
 from pprint import pprint
-with open('data/ibike.json') as file:
+with open('data/ibike-pc.json',encoding="utf-8") as file:
     data = file.read()
 
 jdata = json.loads(data)
@@ -28,7 +28,7 @@ pprint(station)
 # 排序
 station.sort(key=lambda x: x[2], reverse=True)    
 pprint(station)
-with open('data/ibikeSorted.txt', 'w') as f:
+with open('data/ibikeSorted.txt', 'w',encoding="utf-8") as f:
     for i in station:
         f.write(str(i)+'\n')
 
