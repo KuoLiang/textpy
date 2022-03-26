@@ -37,13 +37,62 @@ print(tags_news)
 """
 ##########
 #%%
+def stopwordslist(filepath):  
+    stopwords = [line.strip() for line in open(filepath, 'r', encoding='utf-8').readlines()]  
+    return stopwords  
+def seg_sentence(sentence):  
+    sentence_seged = jieba.cut(sentence.strip())  
+    stopwords = stopwordslist('stopwords.txt')  # 這裏加載停用詞的路徑  
+    outstr = ''  
+    for word in sentence_seged:  
+        if word not in stopwords:  
+            if word != '\t':  
+                outstr += word  
+                outstr += " "   #再次組合成【帶空格】的串
+    return outstr  
 
-content = open('input.txt', 'rb').read()
-print("Input：", content)
-wb_news3 = jieba.cut(content, cut_all=False)
-print("Default Mode News:","|".join(wb_news3))
-tags_news = jieba.analyse.extract_tags(content, topK=7) 
-print(tags_news)
+###########
+#files
+###########
+
+inputs = open('input.txt', 'r', encoding='utf-8')  
+outputs = open('output.txt', 'w')  
+for line in inputs:  
+    line_seg = seg_sentence(line)  # 這裏的返回值是字符串  
+    outputs.write(line_seg + '\n')  
+outputs.close()  
+inputs.close()  
+
+content_orig = open('input.txt', 'rb').read()        #without stopwords
+content_stop = open('output.txt', 'rb').read()
+
+###########
+#show in console
+###########
+
+
+#print("Input：", content)
+wb_news3 = jieba.cut(content_orig, cut_all=False)
+wb_news4 = jieba.cut(content_stop, cut_all=False)
+
+# 第一個參數：待提取關鍵詞的文本
+# 第二個參數：返回關鍵詞的數量，重要性從高到低排序
+# 第三個參數：是否同時返回每個關鍵詞的權重
+# 第四個參數：詞性過濾，爲空表示不過濾，若提供則僅返回符合詞性要求的關鍵詞
+
+#print("Default Mode News:","|".join(wb_news3))
+tags_news3 = jieba.analyse.extract_tags(content_orig, topK=10, withWeight=True, allowPOS=()) 
+#print(tags_news3)
+# 同樣是四個參數，但allowPOS默認爲('ns', 'n', 'vn', 'v')
+# 即僅提取地名、名詞、動名詞、動詞
+tags_news4 = jieba.analyse.extract_tags(content_stop, topK=10, withWeight=True, allowPOS=('ns', 'n', 'vn', 'v')) 
+#tags_news4 = jieba.analyse.extract_tags(content_stop, topK=10, withWeight=True, allowPOS=()) 
+
+#print(tags_news4)
+
+for item in tags_news4:
+    # 分別爲關鍵詞和相應的權重
+    print(item[0], item[1])
 
 
 
